@@ -51,12 +51,14 @@ int main(int argc, char *argv[]) {
 
     if (elapsedTime.count() > msPerGridCell) {
       game.step();
-      
+      game.draw(tm);
       lastFrameTime = currentTime;
     }
-    game.draw(tm);
+    tm.refresh();
     UserInput input = tm.getUserInput();
-    game.computeUserInput(input);
+    if (game.computeUserInput(input)) {
+      game.draw(tm);
+    }
     if (input.keycode_ == 'q') {
       break;
     }

@@ -60,7 +60,8 @@ void Game::step() {
   if (board_.getCurrent() == nullptr) {
     board_.placeTetromino();
   } else {
-    if (board_.getCurrent()->getRow() == board_.getHeight() - 4) {
+    //check if tetrio is at the bottom or on top of another tetrio
+    if (board_.checkIfCurrentTetrominoIsAtBottom()) {
       board_.placeTetromino();
     } else {
       board_.getCurrent()->moveDown();
@@ -68,14 +69,23 @@ void Game::step() {
   }
 }
 
-void Game::computeUserInput(UserInput input) {
-  if (input.isKeyLeft()) {
+bool Game::computeUserInput(UserInput input) {
+  if (input.isKeyLeft() && !board_.checkIfCurrentTetrominoIsAtLeftBorder()) {
     board_.getCurrent()->moveLeft();
-  } else if (input.isKeyRight()) {
+    return true;
+  } else if (input.isKeyRight() && !board_.checkIfCurrentTetrominoIsAtRightBorder()) {
     board_.getCurrent()->moveRight();
+    return true;
   } else if (input.keycode_ == int('s')) {
     board_.getCurrent()->rotateRight();
+    return true;
+  } else if (input.isKeyDown() && !board_.checkIfCurrentTetrominoIsAtBottom()) {
+   
+      board_.getCurrent()->moveDown();
+    
+    return true;
   }
+  return false;
 }
 // Getter und Setter
 int Game::getLevel() { return level_; }

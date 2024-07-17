@@ -69,11 +69,11 @@ void Tetromino::rotateRight() {
   }
 }
 
-int Tetromino::getPixel(int x, int y) {
-  if (x < 0 || x >= 4 || y < 0 || y >= 4) {
+int Tetromino::getPixel(int row, int col) {
+  if (row < 0 || row >= 4 || col < 0 || col >= 4) {
     return -1;
   }
-  return shape_[x][y];
+  return shape_[row][col];
 }
 
 void Tetromino::moveLeft() { position_.y--; }

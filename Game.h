@@ -18,12 +18,12 @@ public:
 
   // Handled den UserInput (Tetromino verschieben rotieren | verlassen des
   // Spiels)
-  void computeUserInput(UserInput input);
+  bool computeUserInput(UserInput input);
   // Getter und Setter
   void setLevel(int level);
   int getLevel();
   void setScore(int score);
-  int getScore();
+  int getScore(); 
 
 private:
   // Spielfeld
