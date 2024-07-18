@@ -27,6 +27,15 @@ test: $(TEST_BINARIES)
 %.o: %.cpp *.h
 	$(CXX) -c $<
 
+debug: debug.o $(OBJECTS)
+	$(CXX) -o $@ $^ $(LIBS)
+
+runDebug: debug
+	./debug
+
+runTetris: TetrisMain
+	./TetrisMain
+
 %Main: %Main.o $(OBJECTS)
 	$(CXX) -o $@ $^ $(LIBS)
 
@@ -37,6 +46,7 @@ clean:
 	rm -f *Main
 	rm -f *Test
 	rm -f *.o
+	rm -f debug
 
 format:
 	clang-format -i *.cpp *.h

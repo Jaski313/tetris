@@ -10,9 +10,7 @@ public:
   // fallenden Tetromino (current)
   void draw(TerminalManager tm);
 
-  // Prüft ob eine Reihe komplett ist, entfernt sie und rückt die
-  // darüberliegenden Reihen nach unten
-  void removeFullRows();
+  int countFullRowsAndDelete();
   // Erzeugt ein neues Tetromino und platzier es
   void placeTetromino();
 

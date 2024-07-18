@@ -23,7 +23,7 @@ public:
   void setLevel(int level);
   int getLevel();
   void setScore(int score);
-  int getScore(); 
+  int getScore();
 
 private:
   // Spielfeld

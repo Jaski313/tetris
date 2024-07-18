@@ -10,13 +10,13 @@ struct TetrominoData {
 
 // Jeder Tetromino hardcoded mit Farbe
 const std::vector<TetrominoData> TETROMINOS = {
-    {{{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}}, 2},
-    {{{1, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, 3},
-    {{{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, 4},
-    {{{0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, 5},
-    {{{1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, 6},
-    {{{1, 0, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, 7},
-    {{{0, 0, 1, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, 8}};
+    {{{0, 0, 0, 0}, {0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}}, 2},
+    {{{0, 0, 0, 0}, {0, 1, 1, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}}, 3},
+    {{{0, 0, 0, 0}, {1, 1, 1, 0}, {0, 1, 0, 0}, {0, 0, 0, 0}}, 4},
+    {{{0, 0, 0, 0}, {0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}}, 5},
+    {{{0, 0, 0, 0}, {1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}}, 6},
+    {{{0, 0, 0, 0}, {1, 1, 1, 0}, {1, 0, 0, 0}, {0, 0, 0, 0}}, 7},
+    {{{0, 0, 0, 0}, {1, 1, 1, 0}, {0, 0, 1, 0}, {0, 0, 0, 0}}, 8}};
 
 // Struktur einer Position (Koordinaten)
 struct Position {
@@ -27,10 +27,13 @@ struct Position {
 class Tetromino {
 public:
   // Konstruktor
-  Tetromino(int type);
+  Tetromino(int type, int row, int col);
 
-  // Rotiert den Tetromino
+  // Rotiert den Tetromino nach rechts
   void rotateRight();
+
+  // Rotiert den Tetromino nach links
+  void rotateLeft();
 
   // Bewegt den Tetromino (verändert die Koordinaten)
   void moveLeft();
@@ -44,6 +47,9 @@ public:
   int getRow();
   int getCol();
   int getColor();
+  std::vector<std::vector<int>> getShape();
+
+  void logShape();
 
 private:
   // Position des Tetrominos

@@ -30,7 +30,6 @@ void Game::drawInit(TerminalManager tm) {
   tm.refresh();
 }
 void Game::draw(TerminalManager tm) {
-  int windowHeight = tm.numRows();
   int windowWidth = tm.numCols();
 
   // draw game board
@@ -48,9 +47,22 @@ void Game::draw(TerminalManager tm) {
         int pixelValue = board_.getCurrent()->getPixel(i, j);
         if (pixelValue > 0) {
           tm.drawPixel(board_.getCurrent()->getRow() + i + 3,
-                       windowWidth / 2 + board_.getCurrent()->getCol() + j,
+                       (windowWidth / 2) - (board_.getWidth() / 2) +
+                           board_.getCurrent()->getCol() + j,
                        board_.getCurrent()->getColor());
         }
+      }
+    }
+  }
+
+  // draw next
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      int pixelValue = board_.getNext()->getPixel(i, j);
+      tm.drawPixel(i + 3, windowWidth / 2 + board_.getWidth() / 2 + j + 2, 0);
+      if (pixelValue > 0) {
+        tm.drawPixel(i + 3, windowWidth / 2 + board_.getWidth() / 2 + j + 2,
+                     board_.getNext()->getColor());
       }
     }
   }
@@ -60,7 +72,7 @@ void Game::step() {
   if (board_.getCurrent() == nullptr) {
     board_.placeTetromino();
   } else {
-    //check if tetrio is at the bottom or on top of another tetrio
+    // check if tetrio is at the bottom or on top of another tetrio
     if (board_.checkIfCurrentTetrominoIsAtBottom()) {
       board_.placeTetromino();
     } else {
@@ -73,16 +85,17 @@ bool Game::computeUserInput(UserInput input) {
   if (input.isKeyLeft() && !board_.checkIfCurrentTetrominoIsAtLeftBorder()) {
     board_.getCurrent()->moveLeft();
     return true;
-  } else if (input.isKeyRight() && !board_.checkIfCurrentTetrominoIsAtRightBorder()) {
+  } else if (input.isKeyRight() &&
+             !board_.checkIfCurrentTetrominoIsAtRightBorder()) {
     board_.getCurrent()->moveRight();
     return true;
   } else if (input.keycode_ == int('s')) {
     board_.getCurrent()->rotateRight();
     return true;
   } else if (input.isKeyDown() && !board_.checkIfCurrentTetrominoIsAtBottom()) {
-   
-      board_.getCurrent()->moveDown();
-    
+
+    board_.getCurrent()->moveDown();
+
     return true;
   }
   return false;
