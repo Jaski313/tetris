@@ -14,9 +14,10 @@ public:
   // Erzeugt ein neues Tetromino und platzier es
   void placeTetromino();
 
-  bool checkIfCurrentTetrominoIsAtBottom();
-  bool checkIfCurrentTetrominoIsAtRightBorder();
-  bool checkIfCurrentTetrominoIsAtLeftBorder();
+  bool isAtBottom();
+
+  bool canMoveRight();
+  bool canMoveLeft();
 
   // Getter und Setter
   int getWidth();

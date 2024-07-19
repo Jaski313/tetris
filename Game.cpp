@@ -1,5 +1,7 @@
 #include "./Game.h"
+#include <cstring>
 #include <iostream>
+#include <string>
 
 const int *FRAMES_PER_GRIDCELL =
     new int[30]{48, 43, 38, 33, 28, 23, 18, 13, 8, 6, 5, 5, 5, 4, 4,
@@ -66,6 +68,15 @@ void Game::draw(TerminalManager tm) {
       }
     }
   }
+
+  // draw level and score
+  tm.drawString(3, windowWidth / 2 - board_.getWidth() / 2 - 8, 1, "Level: ");
+  tm.drawString(3, windowWidth / 2 - board_.getWidth() / 2 - 3, 1,
+                (std::to_string(level_).data()));
+
+  tm.drawString(4, windowWidth / 2 - board_.getWidth() / 2 - 8, 1, "Score: ");
+  tm.drawString(4, windowWidth / 2 - board_.getWidth() / 2 - 3, 1,
+                (std::to_string(score_).data()));
 }
 
 void Game::step() {
@@ -73,7 +84,7 @@ void Game::step() {
     board_.placeTetromino();
   } else {
     // check if tetrio is at the bottom or on top of another tetrio
-    if (board_.checkIfCurrentTetrominoIsAtBottom()) {
+    if (board_.isAtBottom()) {
       board_.placeTetromino();
     } else {
       board_.getCurrent()->moveDown();
@@ -82,17 +93,16 @@ void Game::step() {
 }
 
 bool Game::computeUserInput(UserInput input) {
-  if (input.isKeyLeft() && !board_.checkIfCurrentTetrominoIsAtLeftBorder()) {
+  if (input.isKeyLeft() && board_.canMoveLeft()) {
     board_.getCurrent()->moveLeft();
     return true;
-  } else if (input.isKeyRight() &&
-             !board_.checkIfCurrentTetrominoIsAtRightBorder()) {
+  } else if (input.isKeyRight() && board_.canMoveRight()) {
     board_.getCurrent()->moveRight();
     return true;
   } else if (input.keycode_ == int('s')) {
     board_.getCurrent()->rotateRight();
     return true;
-  } else if (input.isKeyDown() && !board_.checkIfCurrentTetrominoIsAtBottom()) {
+  } else if (input.isKeyDown() && !board_.isAtBottom()) {
 
     board_.getCurrent()->moveDown();
 

@@ -17,6 +17,19 @@ Color purple(0.5f, 0.0f, 0.5f);
 Color white(1.0f, 1.0f, 1.0f);
 Color black(0.0f, 0.0f, 0.0f);
 
+#ifdef DEBUG
+int main() {
+  Tetromino t(4, 0, 0);
+  // log something
+  t.logShape();
+  for (int i = 0; i < 4; i++) {
+    std::cout << "Rotating right!" << std::endl;
+    t.rotateRight();
+    t.logShape();
+  }
+}
+#else
+
 int main(int argc, char *argv[]) {
   Game game;
   TerminalManager tm({{black, black},
@@ -64,3 +77,4 @@ int main(int argc, char *argv[]) {
     }
   }
 }
+#endif

@@ -43,7 +43,7 @@ void Board::placeTetromino() {
   next_ = new Tetromino(nextType, width_ / 2, 0);
 }
 
-bool Board::checkIfCurrentTetrominoIsAtBottom() {
+bool Board::isAtBottom() {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       if (current_->getPixel(i, j) != 0) {
@@ -62,30 +62,36 @@ bool Board::checkIfCurrentTetrominoIsAtBottom() {
   return false;
 }
 
-bool Board::checkIfCurrentTetrominoIsAtLeftBorder() {
+bool Board::canMoveRight() {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       if (current_->getPixel(i, j) != 0) {
-        if (current_->getCol() + j <= 0) {
-          return true;
+        if (current_->getCol() + j + 1 >= width_) {
+          return false;
+        }
+        if (cells_[current_->getRow() + i][current_->getCol() + j + 1] != 0) {
+          return false;
         }
       }
     }
   }
-  return false;
+  return true;
 }
 
-bool Board::checkIfCurrentTetrominoIsAtRightBorder() {
+bool Board::canMoveLeft() {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       if (current_->getPixel(i, j) != 0) {
-        if (current_->getCol() + j >= width_ - 1) {
-          return true;
+        if (current_->getCol() + j - 1 < 0) {
+          return false;
+        }
+        if (cells_[current_->getRow() + i][current_->getCol() + j - 1] != 0) {
+          return false;
         }
       }
     }
   }
-  return false;
+  return true;
 }
 
 int Board::countFullRowsAndDelete() {
