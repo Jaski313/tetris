@@ -4,21 +4,32 @@
 #include <time.h>
 
 Board::Board(int width, int height) {
-  int nextType = rand() % 7;
-  srand(time(NULL));
-  current_ = new Tetromino(nextType, width / 2, 0);
-  ;
-  nextType = rand() % 7;
-  next_ = new Tetromino(nextType, width / 2, 0);
-  ;
   width_ = width;
   height_ = height;
+
   for (int i = 0; i < height; i++) {
     std::vector<int> row;
     for (int j = 0; j < width; j++) {
       row.push_back(0);
     }
     cells_.push_back(row);
+  }
+
+  srand(time(NULL));
+  int nextType = rand() % 7;
+  if (nextType == 0) {
+    current_ = new Tetromino(nextType, width_ / 2 - 2, 0);
+  } else {
+    current_ = new Tetromino(nextType, width_ / 2 - 2, 0);
+  }
+  nextType = rand() % 7;
+  if (nextType == current_->getType()) {
+    nextType = rand() % 7;
+  }
+  if (nextType == 0) {
+    next_ = new Tetromino(nextType, width_ / 2, 0);
+  } else {
+    next_ = new Tetromino(nextType, width_ / 2, 1);
   }
 }
 
@@ -39,7 +50,12 @@ bool Board::placeTetromino() {
   if (nextType == current_->getType()) {
     nextType = rand() % 7;
   }
-  next_ = new Tetromino(nextType, width_ / 2, 0);
+  if (nextType == 0) {
+    next_ = new Tetromino(nextType, width_ / 2 - 2, 0);
+  } else {
+    next_ = new Tetromino(nextType, width_ / 2 - 2, 1);
+  }
+
   // check if current is at top
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {

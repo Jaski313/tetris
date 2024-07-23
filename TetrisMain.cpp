@@ -44,7 +44,6 @@ int main(int argc, char *argv[]) {
     auto currentTime = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(
         currentTime - lastFrameTime);
-    auto elapsedFrames = elapsedTime.count() / MS_PER_FRAME;
     int msPerGridCell =
         FRAMES_PER_GRIDCELL[game.getLevel()] *
         MS_PER_FRAME; // evt noch anpassen damit nicht jedesmal gerechnet wird
