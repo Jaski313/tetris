@@ -58,24 +58,25 @@ void Game::draw(TerminalManager tm) {
   }
 
   // draw next
+  tm.drawString(6, windowWidth / 2 + board_.getWidth() / 2 + 2, 1, "Next: ");
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       int pixelValue = board_.getNext()->getPixel(i, j);
-      tm.drawPixel(i + 3, windowWidth / 2 + board_.getWidth() / 2 + j + 2, 0);
+      tm.drawPixel(i + 7, windowWidth / 2 + board_.getWidth() / 2 + j + 4, 0);
       if (pixelValue > 0) {
-        tm.drawPixel(i + 3, windowWidth / 2 + board_.getWidth() / 2 + j + 2,
+        tm.drawPixel(i + 7, windowWidth / 2 + board_.getWidth() / 2 + j + 4,
                      board_.getNext()->getColor());
       }
     }
   }
 
   // draw level and score
-  tm.drawString(3, windowWidth / 2 - board_.getWidth() / 2 - 8, 1, "Level: ");
-  tm.drawString(3, windowWidth / 2 - board_.getWidth() / 2 - 3, 1,
+  tm.drawString(3, windowWidth / 2 + board_.getWidth() / 2 + 2, 1, "Level: ");
+  tm.drawString(3, windowWidth / 2 + board_.getWidth() / 2 + 9, 1,
                 (std::to_string(level_).data()));
 
-  tm.drawString(4, windowWidth / 2 - board_.getWidth() / 2 - 8, 1, "Score: ");
-  tm.drawString(4, windowWidth / 2 - board_.getWidth() / 2 - 3, 1,
+  tm.drawString(4, windowWidth / 2 + board_.getWidth() / 2 + 2, 1, "Score: ");
+  tm.drawString(4, windowWidth / 2 + board_.getWidth() / 2 + 9, 1,
                 (std::to_string(score_).data()));
 }
 
@@ -85,7 +86,31 @@ void Game::step() {
   } else {
     // check if tetrio is at the bottom or on top of another tetrio
     if (board_.isAtBottom()) {
-      board_.placeTetromino();
+      if (board_.placeTetromino() == false) {
+        gameOver_ = true;
+      }
+      int deletedRows = board_.countFullRowsAndDelete();
+      currentDeletedRows_ = currentDeletedRows_ + deletedRows;
+
+      switch (deletedRows) {
+      case 1:
+        score_ = score_ + 40 * (level_ + 1);
+        break;
+      case 2:
+        score_ = score_ + 100 * (level_ + 1);
+        break;
+      case 3:
+        score_ = score_ + 300 * (level_ + 1);
+        break;
+      case 4:
+        score_ = score_ + 1200 * (level_ + 1);
+        break;
+      }
+
+      if (currentDeletedRows_ >= 10) {
+        level_++;
+        currentDeletedRows_ = currentDeletedRows_ - 10;
+      }
     } else {
       board_.getCurrent()->moveDown();
     }
@@ -99,13 +124,15 @@ bool Game::computeUserInput(UserInput input) {
   } else if (input.isKeyRight() && board_.canMoveRight()) {
     board_.getCurrent()->moveRight();
     return true;
-  } else if (input.keycode_ == int('s')) {
+  } else if (input.keycode_ == int('s') && board_.canRotate()) {
     board_.getCurrent()->rotateRight();
     return true;
+  } else if (input.keycode_ == int('a') && board_.canRotate()) {
+    board_.getCurrent()->rotateLeft();
+    return true;
   } else if (input.isKeyDown() && !board_.isAtBottom()) {
-
     board_.getCurrent()->moveDown();
-
+    score_ = score_ + 1;
     return true;
   }
   return false;
@@ -114,6 +141,8 @@ bool Game::computeUserInput(UserInput input) {
 int Game::getLevel() { return level_; }
 
 int Game::getScore() { return score_; }
+
+bool Game::isGameOver() { return gameOver_; }
 
 void Game::setLevel(int level) { level_ = level; }
 

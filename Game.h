@@ -7,7 +7,9 @@ extern const int *FRAMES_PER_GRIDCELL;
 class Game {
 public:
   // Konstruktor
-  Game() : board_(10, 22), score_(0), currentDeletedRows_(0), level_(0) {}
+  Game()
+      : board_(10, 22), score_(0), currentDeletedRows_(0), level_(0),
+        gameOver_(false) {}
 
   // Lässt das Spiel laufen
   void step();
@@ -24,6 +26,7 @@ public:
   int getLevel();
   void setScore(int score);
   int getScore();
+  bool isGameOver();
 
 private:
   // Spielfeld
@@ -38,4 +41,6 @@ private:
 
   // Aktuelles Level
   int level_;
+
+  bool gameOver_;
 };

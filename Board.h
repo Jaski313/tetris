@@ -6,18 +6,16 @@ public:
   // Konstruktor
   Board(int width, int height);
 
-  // Zeichnet das Spielfeld mit allen liegenden Tetrominos (cells) und dem
-  // fallenden Tetromino (current)
-  void draw(TerminalManager tm);
-
   int countFullRowsAndDelete();
   // Erzeugt ein neues Tetromino und platzier es
-  void placeTetromino();
+  bool placeTetromino();
 
   bool isAtBottom();
 
   bool canMoveRight();
   bool canMoveLeft();
+
+  bool canRotate();
 
   // Getter und Setter
   int getWidth();
