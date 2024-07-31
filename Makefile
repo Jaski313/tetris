@@ -11,7 +11,7 @@ LIBS = -lncurses
 TESTLIBS = -lgtest -lpthread
 OBJECTS = $(addsuffix .o, $(basename $(filter-out %Main.cpp %Test.cpp, $(wildcard *.cpp))))
 
-all: compile format checkstyle test
+all: compile checkstyle test
 
 play: compile
 	./$(MAIN_BINARIES)

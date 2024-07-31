@@ -6,23 +6,28 @@ public:
   // Konstruktor
   Board(int width, int height);
 
+  // zählt volle Reihen und löscht sie
   int countFullRowsAndDelete();
-  // Erzeugt ein neues Tetromino und platzier es
+  // Erzeugt ein neues Tetromino und platzier das alte auf dem Spielfeld
   bool placeTetromino();
 
-  bool isAtBottom();
+  // gibt zurück ob der aktuelle Tetromino am Boden ist oder auf einen anderen
+  // stößt
+  bool isAtBottom() const;
 
-  bool canMoveRight();
-  bool canMoveLeft();
-
-  bool canRotate();
+  // funktionen zum überprüfen ob das tetromino sich bewegen oder rotieren kann
+  bool canMoveRight() const;
+  bool canMoveLeft() const;
+  bool canRotate() const;
 
   // Getter und Setter
-  int getWidth();
-  int getHeight();
-  int getPixel(int x, int y);
-  Tetromino *getCurrent();
-  Tetromino *getNext();
+  int getWidth() const;
+  int getHeight() const;
+  int getPixel(int row, int col) const;
+  void setPixel(int row, int col, int color);
+  Tetromino *getCurrent() const;
+  Tetromino *getNext() const;
+  void setCurrent(Tetromino *t);
 
 private:
   // Maase des Spielfelds

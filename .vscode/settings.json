@@ -53,6 +53,7 @@
         "typeinfo": "cpp",
         "unordered_map": "cpp",
         "algorithm": "cpp",
-        "bit": "cpp"
+        "bit": "cpp",
+        "fstream": "cpp"
     }
 }

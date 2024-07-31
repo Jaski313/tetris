@@ -6,7 +6,7 @@
 Board::Board(int width, int height) {
   width_ = width;
   height_ = height;
-
+  // initialisierung des Spielfelds (alles auf 0)
   for (int i = 0; i < height; i++) {
     std::vector<int> row;
     for (int j = 0; j < width; j++) {
@@ -14,8 +14,9 @@ Board::Board(int width, int height) {
     }
     cells_.push_back(row);
   }
-
+  // seeding der random funktion
   srand(time(NULL));
+  // generierung der ersten tetrominos
   int nextType = rand() % 7;
   if (nextType == 0) {
     current_ = new Tetromino(nextType, width_ / 2 - 2, 0);
@@ -34,6 +35,7 @@ Board::Board(int width, int height) {
 }
 
 bool Board::placeTetromino() {
+  // übernehme die Werte des aktuellen Tetrominos in das Spielfeld
   if (current_ != nullptr) {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
@@ -45,6 +47,7 @@ bool Board::placeTetromino() {
     }
     delete current_;
   }
+  // generierung des nächsten Tetrominos
   current_ = next_;
   int nextType = rand() % 7;
   if (nextType == current_->getType()) {
@@ -70,7 +73,8 @@ bool Board::placeTetromino() {
   return true;
 }
 
-bool Board::isAtBottom() {
+bool Board::isAtBottom() const {
+  // überprüfe ob das tetromino am boden ist
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       if (current_->getPixel(i, j) != 0) {
@@ -78,7 +82,7 @@ bool Board::isAtBottom() {
           return true;
         }
       }
-      // check if tetromino hits other tetromino
+      // überprüfe ob das tetromino auf einem anderen liegt
       if (current_->getPixel(i, j) != 0) {
         if (cells_[current_->getRow() + i + 1][current_->getCol() + j] != 0) {
           return true;
@@ -89,7 +93,8 @@ bool Board::isAtBottom() {
   return false;
 }
 
-bool Board::canMoveRight() {
+bool Board::canMoveRight() const {
+  // überprüfe ob das tetromino sich nach rechts bewegen kann
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       if (current_->getPixel(i, j) != 0) {
@@ -105,7 +110,8 @@ bool Board::canMoveRight() {
   return true;
 }
 
-bool Board::canMoveLeft() {
+bool Board::canMoveLeft() const {
+  // überprüfe ob das tetromino sich nach links bewegen kann
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       if (current_->getPixel(i, j) != 0) {
@@ -121,7 +127,10 @@ bool Board::canMoveLeft() {
   return true;
 }
 
-bool Board::canRotate() {
+bool Board::canRotate() const {
+  // überprüfe ob sich das tetromino rotieren kann
+  // erstelle eine Kopie des Tetrominos und rotiere diese um dann zu prüfen ob
+  // es sich an einer validen position und ausrichtung befindet
   Tetromino temp = *current_;
   temp.rotateRight();
   for (int i = 0; i < 4; i++) {
@@ -144,6 +153,7 @@ bool Board::canRotate() {
 
 int Board::countFullRowsAndDelete() {
   int count = 0;
+  // zähle volle Reihen und lösche sie
   for (int i = 0; i < height_; i++) {
     bool full = true;
     for (int j = 0; j < width_; j++) {
@@ -165,10 +175,10 @@ int Board::countFullRowsAndDelete() {
 }
 
 // Getter und Setter
-int Board::getWidth() { return width_; }
-int Board::getHeight() { return height_; }
-int Board::getPixel(int row, int col) { return cells_[row][col]; }
-Tetromino *Board::getCurrent() { return current_; }
-Tetromino *Board::getNext() { return next_; }
-
-// cd develop/uni/sem2/cpp/jb1519/projekt
+int Board::getWidth() const { return width_; }
+int Board::getHeight() const { return height_; }
+int Board::getPixel(int row, int col) const { return cells_[row][col]; }
+void Board::setPixel(int row, int col, int color) { cells_[row][col] = color; }
+Tetromino *Board::getCurrent() const { return current_; }
+Tetromino *Board::getNext() const { return next_; }
+void Board::setCurrent(Tetromino *t) { current_ = t; }

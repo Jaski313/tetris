@@ -41,15 +41,14 @@ public:
   void moveDown();
 
   // Getter und Setter
-  int getType();
+  int getType() const;
 
-  int getPixel(int x, int y);
-  int getRow();
-  int getCol();
-  int getColor();
-  std::vector<std::vector<int>> getShape();
-
-  void logShape();
+  int getPixel(int x, int y) const;
+  int getRow() const;
+  int getCol() const;
+  int getColor() const;
+  std::vector<std::vector<int>> getShape() const;
+  void logShape() const;
 
 private:
   // Position des Tetrominos

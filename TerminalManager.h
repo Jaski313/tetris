@@ -62,6 +62,9 @@ public:
   // Destructor: Clean up the terminal after use.
   ~TerminalManager();
 
+  // Copy constructor: We don't want to copy the terminal manager.
+  TerminalManager(const TerminalManager &other) = default;
+
   // Draw a pixel at the given logical position in the given color.
   // Note: the pixel is drawn with the foreground color of the
   // color pair with the given index that was specified in the constructor.
